@@ -1,0 +1,164 @@
+name: "Apply: the job per module way"
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  module-a-apply:
+    runs-on: ubuntu-20.04
+    name: Module A Init & Apply
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false
+
+    - name: Terraform Init
+      run: |
+        terraform -chdir="A" init
+
+    - name: Terraform Apply
+      run: |
+        terraform -chdir="A" apply -auto-approve -no-color
+
+  module-b-apply:
+    runs-on: ubuntu-20.04
+    name: Module B Init & Apply
+    needs: ["module-a-apply"]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false
+
+    - name: Terraform Init
+      run: |
+        terraform -chdir="B" init
+
+    - name: Terraform Apply
+      run: |
+        terraform -chdir="B" apply -auto-approve -no-color
+
+  module-c-apply:
+    runs-on: ubuntu-20.04
+    name: Module C Init & Apply
+    needs: ["module-a-apply"]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false
+
+    - name: Terraform Init
+      run: |
+        terraform -chdir="C" init
+
+    - name: Terraform Apply
+      run: |
+        terraform -chdir="C" apply -auto-approve -no-color
+
+  module-e-apply:
+    runs-on: ubuntu-20.04
+    name: Module E Init & Apply
+    needs: ["module-b-apply", "module-c-apply"]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false
+
+    - name: Terraform Init
+      run: |
+        terraform -chdir="E" init
+
+    - name: Terraform Apply
+      run: |
+        terraform -chdir="E" apply -auto-approve -no-color
+
+  module-d-apply:
+    runs-on: ubuntu-20.04
+    name: Module D Init & Apply
+    needs: ["module-c-apply"]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false
+
+    - name: Terraform Init
+      run: |
+        terraform -chdir="D" init
+
+    - name: Terraform Apply
+      run: |
+        terraform -chdir="D" apply -auto-approve -no-color
+
+  module-f-apply:
+    runs-on: ubuntu-20.04
+    name: Module F Init & Apply
+    needs: ["module-d-apply"]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false
+
+    - name: Terraform Init
+      run: |
+        terraform -chdir="F" init
+
+    - name: Terraform Apply
+      run: |
+        terraform -chdir="F" apply -auto-approve -no-color
+
+  module-g-apply:
+    runs-on: ubuntu-20.04
+    name: Module G Init & Apply
+    needs: ["module-e-apply", "module-f-apply"]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false
+
+    - name: Terraform Init
+      run: |
+        terraform -chdir="G" init
+
+    - name: Terraform Apply
+      run: |
+        terraform -chdir="G" apply -auto-approve -no-color

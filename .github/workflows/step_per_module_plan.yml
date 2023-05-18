@@ -1,0 +1,59 @@
+name: "Plan: the step per module way"
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  plan:
+    runs-on: ubuntu-20.04
+    name: Plan
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false
+
+    - name: Terraform Init & Plan for module A
+      run: |
+        terraform -chdir="A" init
+        terraform -chdir="A" plan -no-color
+
+    - name: Terraform Init & Plan for module B
+      run: |
+        terraform -chdir="B" init
+        terraform -chdir="B" plan -no-color
+
+    - name: Terraform Init & Plan for module C
+      run: |
+        terraform -chdir="C" init
+        terraform -chdir="C" plan -no-color
+
+    - name: Terraform Init & Plan for module D
+      run: |
+        terraform -chdir="D" init
+        terraform -chdir="D" plan -no-color
+
+    - name: Terraform Init & Plan for module E
+      run: |
+        terraform -chdir="E" init
+        terraform -chdir="E" plan -no-color
+
+    - name: Terraform Init & Plan for module F
+      run: |
+        terraform -chdir="F" init
+        terraform -chdir="F" plan -no-color
+
+    - name: Terraform Init & Plan for module G
+      run: |
+        terraform -chdir="G" init
+        terraform -chdir="G" plan -no-color

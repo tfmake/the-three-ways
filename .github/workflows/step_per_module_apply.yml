@@ -1,0 +1,59 @@
+name: "Apply: the step per module way"
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-20.04
+    name: Apply
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false
+
+    - name: Terraform Init & Apply for module A
+      run: |
+        terraform -chdir="A" init
+        terraform -chdir="A" apply -auto-approve -no-color
+
+    - name: Terraform Init & Apply for module B
+      run: |
+        terraform -chdir="B" init
+        terraform -chdir="B" apply -auto-approve -no-color
+
+    - name: Terraform Init & Apply for module C
+      run: |
+        terraform -chdir="C" init
+        terraform -chdir="C" apply -auto-approve -no-color
+
+    - name: Terraform Init & Apply for module D
+      run: |
+        terraform -chdir="D" init
+        terraform -chdir="D" apply -auto-approve -no-color
+
+    - name: Terraform Init & Apply for module E
+      run: |
+        terraform -chdir="E" init
+        terraform -chdir="E" apply -auto-approve -no-color
+
+    - name: Terraform Init & Apply for module F
+      run: |
+        terraform -chdir="F" init
+        terraform -chdir="F" apply -auto-approve -no-color
+
+    - name: Terraform Init & Apply for module G
+      run: |
+        terraform -chdir="G" init
+        terraform -chdir="G" apply -auto-approve -no-color

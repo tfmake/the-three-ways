@@ -8,4 +8,3 @@ resource "random_id" "rand" {
 
 output "id" {
   value = random_id.rand.dec
-}

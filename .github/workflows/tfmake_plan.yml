@@ -42,3 +42,5 @@ jobs:
         tfmake_summary_title: "Terraform Plan"
         pull_request_number: ${{ github.event.pull_request.number }}
         token: ${{ secrets.GITHUB_TOKEN }}
+      env:
+        MAX_COMMENT_SIZE: 1024

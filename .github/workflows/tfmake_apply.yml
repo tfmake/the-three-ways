@@ -37,6 +37,6 @@ jobs:
     - name: tfmake execution
       uses: tfmake/tfmake-action@main
       with:
-        tfmake_context: plan
-        files: ${{ steps.changed_files.outputs.all_modified_files }}
+        tfmake_context: apply
+        touch_files: ${{ steps.changed_files.outputs.all_modified_files }}
         tfmake_summary_title: "Terraform Apply"

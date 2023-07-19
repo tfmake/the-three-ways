@@ -1,0 +1,164 @@
+name: "Plan: the job per module way"
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  module-a-plan:
+    runs-on: ubuntu-20.04
+    name: Module A Init & Plan
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false
+
+    - name: Terraform Init
+      run: |
+        terraform -chdir="A" init
+
+    - name: Terraform Plan
+      run: |
+        terraform -chdir="A" plan -no-color
+
+  module-b-plan:
+    runs-on: ubuntu-20.04
+    name: Module B Init & Plan
+    needs: ["module-a-plan"]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false
+
+    - name: Terraform Init
+      run: |
+        terraform -chdir="B" init
+
+    - name: Terraform Plan
+      run: |
+        terraform -chdir="B" plan -no-color
+
+  module-c-plan:
+    runs-on: ubuntu-20.04
+    name: Module C Init & Plan
+    needs: ["module-a-plan"]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false
+
+    - name: Terraform Init
+      run: |
+        terraform -chdir="C" init
+
+    - name: Terraform Plan
+      run: |
+        terraform -chdir="C" plan -no-color
+
+  module-e-plan:
+    runs-on: ubuntu-20.04
+    name: Module E Init & Plan
+    needs: ["module-b-plan", "module-c-plan"]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false
+
+    - name: Terraform Init
+      run: |
+        terraform -chdir="E" init
+
+    - name: Terraform Plan
+      run: |
+        terraform -chdir="E" plan -no-color
+
+  module-d-plan:
+    runs-on: ubuntu-20.04
+    name: Module D Init & Plan
+    needs: ["module-c-plan"]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false
+
+    - name: Terraform Init
+      run: |
+        terraform -chdir="D" init
+
+    - name: Terraform Plan
+      run: |
+        terraform -chdir="D" plan -no-color
+
+  module-f-plan:
+    runs-on: ubuntu-20.04
+    name: Module F Init & Plan
+    needs: ["module-d-plan"]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false
+
+    - name: Terraform Init
+      run: |
+        terraform -chdir="F" init
+
+    - name: Terraform Plan
+      run: |
+        terraform -chdir="F" plan -no-color
+
+  module-g-plan:
+    runs-on: ubuntu-20.04
+    name: Module G Init & Plan
+    needs: ["module-e-plan", "module-f-plan"]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false
+
+    - name: Terraform Init
+      run: |
+        terraform -chdir="G" init
+
+    - name: Terraform Plan
+      run: |
+        terraform -chdir="G" plan -no-color

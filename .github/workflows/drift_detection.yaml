@@ -1,0 +1,36 @@
+name: Drift Detection
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: 0 0 * * *
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  drift_detection:
+    runs-on: ubuntu-20.04
+    name: Drift Detection
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false
+
+    - name: tfmake install
+      uses: tfmake/tfmake-install-action@main
+      with:
+        tfmake_version: main
+
+    - name: tfmake execution
+      uses: tfmake/tfmake-action@main
+      with:
+        tfmake_context: plan
+        tfmake_run_mode: --all
+        tfmake_summary_title: "Terraform Plan"

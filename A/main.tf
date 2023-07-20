@@ -3,7 +3,7 @@ resource "random_id" "rand" {
     content = var.content
   }
 
-  byte_length = 4
+  byte_length = 8
 }
 
 output "id" {
